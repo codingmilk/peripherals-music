@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+//    clojars {
+//        url "https://clojars.org/repo/"
+//    }
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/jfugue/jfugue
+//    implementation 'jfugue:jfugue:4.0.3'
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+test {
+    useJUnitPlatform()
+}
