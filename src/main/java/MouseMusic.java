@@ -1,22 +1,14 @@
-import java.awt.Dimension;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.Toolkit;
+import org.jfugue.Player;
 
-import org.jfugue.*;
 
 
 public class MouseMusic implements Runnable {
-	
+
 	public Object lock = new Object();
-	
-	public MouseMusic() {
-		
-	}
 
 	@Override
 	public void run() {
-		while(true) {
+		while(MouseChecker.frame!=null) {
 			synchronized (lock) {
 				while(MouseChecker.m) {
 					try {
@@ -27,13 +19,19 @@ public class MouseMusic implements Runnable {
 				}
 			}
 			Player player = new Player();
-			Point loc = MouseInfo.getPointerInfo().getLocation();
-			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			double width = screenSize.getWidth();
-			double height = screenSize.getHeight();
-			int pitch = 127 - (int) (loc.y*127/height);
-			int volume = (int) (loc.x*16383/width);
-			player.play("X[Volume]=" + volume + " [" + pitch + "]");
+
+      		int fwidth = MouseChecker.frame.getContentPane().getWidth();
+      		int fheight = MouseChecker.frame.getContentPane().getHeight();
+            System.out.println("frame: " + fwidth + ", " + fheight);
+            System.out.println("pointer loc: " + MouseChecker.pointerLocX +","+ MouseChecker.pointerLocY);//these co-ords are relative to the component
+
+			int pitch = 127 - (int) (MouseChecker.pointerLocY*127/fheight);
+			int volume = (int) (MouseChecker.pointerLocX*16383/fwidth);
+
+			String musicString = "X[Volume]=" + volume + " [" + pitch + "]";
+            System.out.println("musicString = " + musicString);
+
+			player.play(musicString);
 		}
 	}
 }
